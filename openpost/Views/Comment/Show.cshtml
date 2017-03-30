@@ -1,0 +1,86 @@
+﻿@model SharedUtils.Api.RequestViewModels.PostCommentViewModel
+
+<!--comments-->
+<div class="dapi-100_comments" id="dapi-100_comments">
+    <h2>
+        @ViewBag.CommentsCount
+    @if (!Localizer["Pluralize_Comment"].IsResourceNotFound)
+    {
+        @(SharedUtils.Helpers.Pluralize(ViewBag.CommentsCount, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+            Localizer["Pluralize_Comment"].Value.Split(new string[] { "//" }, StringSplitOptions.None)));
+    }
+    else
+    {
+        @Localizer["Pluralize_Comment"]
+    }
+</h2>
+<ol class="dapi-100_comment-list">
+    @await Component.InvokeAsync("CommentList", new { source = ViewBag.SourcePlatformId, page = ViewBag.PublicIdentifier })
+</ol>
+</div>
+<!--//comments-->
+@if (ViewBag.IsGuest)
+{
+    <div class="dapi-100_comment-respond" id="dapi-100_respond">
+        <p>@Localizer["Guest_Can_Only_Read"]</p>
+    </div>
+}
+else
+{
+    <div class="dapi-100_confirm-modal">
+        <!-- Modal content -->
+        <div class="dapi-100_confirm-modal-content">
+            <span class="dapi-100_confirm-modal-close">&times;</span>
+            <p>@Localizer["Sure_To_Delete"]</p>
+            <form id="dapi-100_DeleteComment">
+                <input type="hidden" name="SourcePlatform" value="@Model.SourcePlatform" />
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="Token" value="@Model.Token" />
+                <input type="hidden" name="CommentId" value="" />
+                <button type="button" class="dapi-100_cancel-delete">@Localizer["No"]</button>
+                <button type="submit" class="dapi-100_confirm-delete">@Localizer["Yes"]</button>
+            </form>
+        </div>
+    </div>
+
+    <!--respond-->
+    <div class="dapi-100_comment-respond" id="dapi-100_respond">
+        <h2>@Localizer["Leave_Comment"]</h2>
+        <div class="dapi-100_container">
+            <p>@Localizer["Comments_Warning"]</p>
+            <p class="dapi-100_comment-response-msg" style="display:none">@Localizer["Respond_To_Prefix"]<a href="#comment-id"></a>@Localizer["Respond_To_Suffix"]<a href="javascript:void(0)" class="dapi-100_cancel-comment-link"> @Localizer["Cancel"]</a></p>
+            <p class="dapi-100_comment-edit-msg" style="display:none">@Localizer["Edit_Prefix"]<a href="#comment-id">@Localizer["Message"]</a>@Localizer["Edit_Suffix"]<a href="javascript:void(0)" class="dapi-100_cancel-edit-comment-link"> @Localizer["Cancel"]</a></p>
+            <form id="dapi-100_PostComment">
+                <input type="hidden" name="Current" value="">
+                <input type="hidden" name="Parent" value="@Model.Parent">
+                <input type="hidden" name="SourcePlatform" value="@Model.SourcePlatform" />
+                <input type="hidden" name="PageIdentifier" value="@Model.PageIdentifier" />
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="Token" value="@Model.Token" />
+                <div class="dapi-100_row">
+                    <textarea name="Content"></textarea>
+                </div>
+
+                <div class="dapi-100_row">
+                    <div class="third bwrap">
+                        <input type="submit" value="@Localizer["Submit_Comment"]" class="dapi-100_sub-add-button" />
+                        <input type="submit" value="@Localizer["Edit_Comment"]" class="dapi-100_sub-edit-button" style="display:none;" />
+                        <p class="dapi-100_updating-text" style="display:none;">@Localizer["Updating"]</p>
+                    </div>
+                </div>
+
+                <div class="dapi-100_bottom">
+                    <div class="dapi-100_row dapi-100_checkbox">
+                        <input type="checkbox" id="ch1">
+                        <label for="ch1">Notify me of replies to my comment via e-mail</label>
+                    </div>
+                    <div class="dapi-100_row dapi-100_checkbox">
+                        <input type="checkbox" id="ch2">
+                        <label for="ch2">Notify me of new articles by email.</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--//respond-->
+}
