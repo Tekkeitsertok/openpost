@@ -13,6 +13,7 @@ namespace openpost.ViewModels
         public string ProfileUrl { get; set; }
         public DateTime PostDate { get; set; }
         public bool IsDeleted { get { return Content == null; } }
+        public string Title { get; set; }
         public string Content { get; set; }
     }
 }

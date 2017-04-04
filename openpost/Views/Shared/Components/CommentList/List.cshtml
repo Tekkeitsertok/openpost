@@ -1,6 +1,21 @@
 ﻿@model List<CommentViewModel>
 
-@foreach (var comment in Model)
+@if (Model.Any())
 {
-    await Html.RenderPartialAsync("_Comment", comment);
+    @if (Model.First().Depth > 0)
+    {
+        <ul class="dapi-100_comments-list dapi-100_reply-list-depth-@Model.First().Depth">
+            @foreach (var comment in Model)
+            {
+                await Html.RenderPartialAsync("_Comment", comment);
+            }
+        </ul>
+    }
+    else
+    {
+        @foreach (var comment in Model)
+        {
+            await Html.RenderPartialAsync("_Comment", comment);
+        }
+    }
 }

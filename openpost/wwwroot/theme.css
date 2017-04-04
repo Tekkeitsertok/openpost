@@ -1,1 +1,337 @@
-﻿
+﻿/* Modal */
+.dapi-100_confirm-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.dapi-100_confirm-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.dapi-100_confirm-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .dapi-100_confirm-modal-close:hover,
+    .dapi-100_confirm-modal-close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+/* End Modal */
+
+/**
+ * Oscuro: #283035
+ * Azul: #03658c
+ * Lines: #ff8e88
+ * Fondo: #dee1e3
+ ----------------------------------*/
+.dapi-100_comments-container * {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.dapi-100_comments-container ul {
+    list-style-type: none;
+}
+
+/* Comments list */
+.dapi-100_comments-container {
+    margin: 60px 0 15px;
+    width: 790px;
+}
+
+.dapi-100_comments-container h1 {
+    font-size: 36px;
+    color: #283035;
+    font-weight: 400;
+}
+
+.dapi-100_comments-container h1 a {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.dapi-100_comments-list {
+    margin-top: 30px;
+    position: relative;
+}
+
+/* Lines */
+    .dapi-100_comments-list:before {
+        content: '';
+        width: 2px;
+        height: 100%;
+        background: #ff8e88;
+        position: absolute;
+        left: 44px;
+        top: 0;
+    }
+
+    .dapi-100_comments-list:after {
+        content: '';
+        position: absolute;
+        background: #ff8e88;
+        bottom: 0;
+        left: 39px;
+        width: 7px;
+        height: 7px;
+        border: 3px solid #fff;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+    }
+.dapi-100_reply-list-depth-1:before, .dapi-100_reply-list-depth-1:after,
+.dapi-100_reply-list-depth-2:before, .dapi-100_reply-list-depth-2:after {
+    display: none;
+}
+
+.dapi-100_reply-list-depth-1 li:before,
+.dapi-100_reply-list-depth-2 li:before {
+    content: '';
+    height: 2px;
+    background: #ff8e88;
+    position: absolute;
+    top: 32px;
+}
+
+.dapi-100_reply-list-depth-1 li:before {
+    width: 68px;
+    left: -68px;
+}
+
+.dapi-100_reply-list-depth-2 li:before {
+    width: 180px;
+    left: -180px;
+}
+
+.dapi-100_comments-list li {
+    margin-bottom: 15px;
+    display: block;
+    position: relative;
+}
+
+    .dapi-100_comments-list li:after {
+        content: '';
+        display: block;
+        clear: both;
+        height: 0;
+        width: 0;
+    }
+
+.dapi-100_reply-list-depth-1,
+.dapi-100_reply-list-depth-2 {
+    padding-left: 113px;
+    clear: both;
+    margin-top: 15px;
+}
+
+.dapi-100_reply-list-depth-2 {
+    padding-top: 15px;
+}
+/* Avatar */
+.dapi-100_comments-list .dapi-100_comment-avatar {
+    width: 90px;
+    height: 90px;
+    position: relative;
+    z-index: 99;
+    float: left;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+    .dapi-100_comments-list .dapi-100_comment-avatar img {
+        width: 100%;
+        height: 100%;
+    }
+
+.dapi-100_reply-list-depth-1 .dapi-100_comment-avatar,
+.dapi-100_reply-list-depth-2 .dapi-100_comment-avatar {
+    width: 70px;
+    height: 70px;
+}
+
+.dapi-100_comment-main-level:after {
+    content: '';
+    width: 0;
+    height: 0;
+    display: block;
+    clear: both;
+}
+/* Comment Text */
+.dapi-100_comments-list .dapi-100_comment-box {
+    width: 680px;
+    float: right;
+    position: relative;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+}
+
+.dapi-100_comment-main-level .dapi-100_comment-box:last-child
+{
+    min-height:125px;
+}
+
+    .dapi-100_comments-list .dapi-100_comment-box:before, .dapi-100_comments-list .dapi-100_comment-box:after {
+        content: '';
+        height: 0;
+        width: 0;
+        position: absolute;
+        display: block;
+        border-width: 10px 12px 10px 0;
+        border-style: solid;
+        border-color: transparent #FCFCFC;
+        top: 8px;
+        left: -11px;
+    }
+
+    .dapi-100_comments-list .dapi-100_comment-box:before {
+        border-width: 11px 13px 11px 0;
+        border-color: transparent rgba(0,0,0,0.05);
+        left: -12px;
+    }
+
+.dapi-100_reply-list-depth-1 .dapi-100_comment-box {
+    width: 590px;
+}
+
+.dapi-100_reply-list-depth-2 .dapi-100_comment-box {
+    width: 475px;
+}
+
+.dapi-100_comment-box .dapi-100_comment-head {
+    background: #FCFCFC;
+    padding: 10px 12px;
+    border-bottom: 1px solid #E5E5E5;
+    overflow: hidden;
+}
+
+.dapi-100_comment-box .dapi-100_comment-head i {
+    float: right;
+    margin-left: 14px;
+    position: relative;
+    top: 2px;
+    color: #A6A6A6;
+    cursor: pointer;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+}
+
+.dapi-100_comment-box .dapi-100_comment-head i:hover {
+    color: #ff8e88;
+}
+
+.dapi-100_comment-box .dapi-100_comment-name {
+    color: #283035;
+    font-size: 14px;
+    font-weight: 700;
+    float: left;
+    margin-right: 10px;
+}
+
+    .dapi-100_comment-box .dapi-100_comment-name a {
+        color: #283035;
+    }
+
+.dapi-100_comment-box .dapi-100_comment-head span {
+    float: left;
+    color: #999;
+    font-size: 13px;
+    position: relative;
+    top: 1px;
+}
+
+.dapi-100_comment-box .dapi-100_comment-content {
+    background: #FFF;
+    padding: 12px;
+    font-size: 15px;
+    color: #595959;
+}
+
+.dapi-100_comment-box .dapi-100_comment-name.dapi-100_by-author, .dapi-100_comment-box .dapi-100_comment-name.dapi-100_by-author a {
+    color: #03658c;
+}
+
+    .dapi-100_comment-box .dapi-100_comment-name.dapi-100_by-author:after {
+        content: 'autor';
+        background: #03658c;
+        color: #FFF;
+        font-size: 12px;
+        padding: 3px 5px;
+        font-weight: 700;
+        margin-left: 10px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+/* Responsiveness */
+@media only screen and (max-width: 766px) {
+    .dapi-100_comment-respond,
+    .dapi-100_comments-container {
+        width: 480px;
+    }
+
+    .dapi-100_comments-list .comment-box {
+        width: 390px;
+    }
+
+    .dapi-100_reply-list-depth-1 .dapi-100_comment-box,
+    .dapi-100_reply-list-depth-2 .dapi-100_comment-box {
+        width: 320px;
+    }
+}
+
+/* Comment form */
+.dapi-100_comment-respond {
+    margin: 30px 0;
+    width: 790px;
+    border-top: 1px solid rgba(255,255,255,1);
+    -webkit-box-shadow: 0 -1px 0 rgba(0,0,0,.15);
+    -moz-box-shadow: 0 -1px 0 rgba(0,0,0,.15);
+    box-shadow: 0 -1px 0 rgba(0,0,0,.15);
+}
+
+.dapi-100_comment-respond h2 {
+    font-size: 19px;
+    padding: 30px 0;
+}
+
+.dapi-100_comment-respond .dapi-100_container {
+    float: left;
+    display: block;
+    width: 100%;
+    padding: 17px 20px 0;
+    position: relative;
+    background: #fff;
+    -webkit-box-shadow: 0 0 1px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 0 1px rgba(0,0,0,.2);
+    box-shadow: 0 0 1px rgba(0,0,0,.2);
+}
+
+.dapi-100_container p {
+    color: #666;
+}

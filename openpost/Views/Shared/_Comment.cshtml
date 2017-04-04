@@ -2,55 +2,75 @@
 
 @if (Model.IsDeleted)
 {
-    <li class="dapi-100_comment dapi-100_depth-@(Model.Depth + 1)">
-        <div class="dapi-100_comment-box">
-            <div class="dapi-100_comment-author dapi-100_meta">
+    <li>
+        <div class="@(Model.Depth == 0 ? "dapi-100_comment-main-level":"")">
+            <div class="dapi-100_comment-avatar">
+                <img src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="">
             </div>
-            <div class="dapi-100_comment-text dapi-100_md-content">
-                <p>Message deleted</p>
+            <div class="dapi-100_comment-box">
+                <div class="dapi-100_comment-head">
+                    <h6 class="dapi-100_comment-name">&nbsp;</h6>
+                    <span>&nbsp;</span>
+                </div>
+                <div class="dapi-100_comment-content">@Localizer["Post_Deleted"]</div>
             </div>
         </div>
     </li>
 }
 else
 {
-    <li id="@Model.Id" class="dapi-100_comment dapi-100_depth-@(Model.Depth + 1)">
-        <div class="dapi-100_avatar">
-            <a href="@Model.ProfileUrl">
-                @if (!Model.HasAvatar)
+    <li id="@Model.Id">
+        <div class="@(Model.Depth == 0 ? "dapi-100_comment-main-level":"")">
+            <div class="dapi-100_comment-avatar">
+                <a href="@Model.ProfileUrl">
+                    @if (!Model.HasAvatar)
                 {
-                    <img src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="">
+                        <img src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="">
+                    }
+                    else
+                    {
+                        <img src="@Model.AvatarUrl" alt="">
+                    }
+                </a>
+            </div>
+            <div class="dapi-100_comment-box">
+                <div class="dapi-100_comment-head">
+                    @* Todo here : load timezone from user side *@
+                    <h6 class="dapi-100_comment-name">@Model.Author</h6>
+                    <span>@SharedUtils.Helpers.PrettifyDate(Model.PostDate, TimeZoneInfo.Local, ViewBag.LangCode)</span>
+                    @if (!ViewBag.IsGuest && Model.Depth < 2)
+                {
+                        <a data-author="@Model.Author" data-id="@Model.Id" href="javascript:void(0)" class="dapi-100_comment-reply-link">
+                            <i class="fa fa-reply"></i>
+                        </a>
+                    }
+                    @if (ViewBag.AuthorId == Model.AuthorId)
+                {
+                        <a href="javascript:void(0)" class="dapi-100_button dapi-100_delete" data-id="@Model.Id">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="dapi-100_button dapi-100_edit" data-id="@Model.Id">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                    }
+                </div>
+                <input type="hidden" id="dapi-100_comment-text-@Model.Id" value="@Model.Content" />
+                @if (ViewBag.IsForum)
+                {
+                    <div class="dapi-100_comment-content">
+                        @if (!string.IsNullOrEmpty(Model.Title))
+                    {
+                            <h6>@Model.Title</h6>
+                        }
+                        <div class="dapi-100_md-content">@Model.Content</div>
+                    </div>
                 }
                 else
                 {
-                    <img src="@Model.AvatarUrl" alt="">
-                }
-            </a>
-        </div>
-        <div class="dapi-100_comment-box">
-            <div class="dapi-100_comment-author dapi-100_meta">
-                @* Todo here : load timezone from user side *@
-                <strong>@Model.Author</strong> @SharedUtils.Helpers.PrettifyDate(Model.PostDate, TimeZoneInfo.Local, ViewBag.LangCode)
-                @if (!ViewBag.IsGuest && Model.Depth < 3)
-                {
-                    <a data-author="@Model.Author" data-id="@Model.Id" href="javascript:void(0)" class="dapi-100_comment-reply-link"> Reply</a>
-                }
-                @if (ViewBag.AuthorId == Model.AuthorId)
-                {
-                    <a href="javascript:void(0)" class="dapi-100_button dapi-100_delete" data-id="@Model.Id">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </a>
-                    <a href="javascript:void(0)" class="dapi-100_button dapi-100_edit" data-id="@Model.Id">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </a>
+                    <div class="dapi-100_comment-content">@Model.Content</div>
                 }
             </div>
-            <input type="hidden" id="dapi-100_comment-text-@Model.Id" value="@Model.Content" />
-            <div class="dapi-100_comment-text dapi-100_md-content">
-                <p>@Model.Content</p>
-            </div>
         </div>
+        @await Component.InvokeAsync("CommentList", new { source = ViewBag.SourcePlatformId, page = ViewBag.PublicIdentifier, parent = Model.Id, depth = (byte)(Model.Depth + 1) })
     </li>
 }
-
-@await Component.InvokeAsync("CommentList", new { source = ViewBag.SourcePlatformId, page = ViewBag.PublicIdentifier, parent = Model.Id, depth = (byte)(Model.Depth + 1) })

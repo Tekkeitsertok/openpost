@@ -1,24 +1,23 @@
 ﻿@model SharedUtils.Api.RequestViewModels.PostCommentViewModel
 
-<!--comments-->
-<div class="dapi-100_comments" id="dapi-100_comments">
+<!-- Comments Container -->
+<div class="dapi-100_comments-container">
     <h2>
         @ViewBag.CommentsCount
-    @if (!Localizer["Pluralize_Comment"].IsResourceNotFound)
-    {
-        @(SharedUtils.Helpers.Pluralize(ViewBag.CommentsCount, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+        @if (!Localizer["Pluralize_Comment"].IsResourceNotFound)
+            {
+            @(SharedUtils.Helpers.Pluralize(ViewBag.CommentsCount, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
             Localizer["Pluralize_Comment"].Value.Split(new string[] { "//" }, StringSplitOptions.None)));
-    }
-    else
-    {
-        @Localizer["Pluralize_Comment"]
-    }
-</h2>
-<ol class="dapi-100_comment-list">
-    @await Component.InvokeAsync("CommentList", new { source = ViewBag.SourcePlatformId, page = ViewBag.PublicIdentifier })
-</ol>
+            }
+            else
+            {
+            @Localizer["Pluralize_Comment"]
+        }
+    </h2>
+    <ul class="dapi-100_comments-list">
+        @await Component.InvokeAsync("CommentList", new { source = ViewBag.SourcePlatformId, page = ViewBag.PublicIdentifier })
+    </ul>
 </div>
-<!--//comments-->
 @if (ViewBag.IsGuest)
 {
     <div class="dapi-100_comment-respond" id="dapi-100_respond">
@@ -43,7 +42,7 @@ else
         </div>
     </div>
 
-    <!--respond-->
+    <!-- Comment form -->
     <div class="dapi-100_comment-respond" id="dapi-100_respond">
         <h2>@Localizer["Leave_Comment"]</h2>
         <div class="dapi-100_container">
@@ -58,7 +57,43 @@ else
                 <input type="hidden" name="Id" value="@Model.Id" />
                 <input type="hidden" name="Token" value="@Model.Token" />
                 <div class="dapi-100_row">
-                    <textarea name="Content"></textarea>
+                    @if (ViewBag.IsForum)
+                    {
+                        <input type="text" name="Title" placeholder="@Localizer["Title"]" /><br />
+                        <div class="dapi-100_md-edit">
+                            <div class="dapi-100_md-edit-toolbar">
+                                <i title="Bold" class="fa fa-bold dapi-100_styling-icon" data-modifier="**"></i>
+                                <i title="Italic" class="fa fa-italic dapi-100_styling-icon" data-modifier="*"></i>
+                                <i title="Strikethrough" class="fa fa-strikethrough dapi-100_styling-icon" data-modifier="~~"></i>
+                                <i title="Underline" class="fa fa-underline dapi-100_styling-icon" data-modifier="++"></i>
+                                <i title="Mark" class="fa fa-pencil dapi-100_styling-icon" data-modifier="=="></i>
+                                <span class="dapi-100_dividor">|</span>
+                                <i title="Heading 1" class="fa dapi-100_heading-icon" data-level="1">h1</i>
+                                <i title="Heading 2" class="fa dapi-100_heading-icon" data-level="2">h2</i>
+                                <i title="Heading 3" class="fa dapi-100_heading-icon" data-level="3">h3</i>
+                                <i title="Heading 4" class="fa dapi-100_heading-icon" data-level="4">h4</i>
+                                <i title="Heading 5" class="fa dapi-100_heading-icon" data-level="5">h5</i>
+                                <i title="Heading 6" class="fa dapi-100_heading-icon" data-level="6">h6</i>
+                                <span class="dapi-100_dividor">|</span>
+                                <i title="Horizontal rule" id="dapi-100_horizontal-rule" class="fa fa-minus" data-prefix="___"></i>
+                                <i title="Quote" class="fa fa-quote-left dapi-100_list-icon" data-prefix="> "></i>
+                                <i title="Unordered list" class="fa fa-list-ul dapi-100_list-icon" data-prefix="- "></i>
+                                <i title="Ordered list" class="fa fa-list-ol dapi-100_list-icon" data-prefix="1. "></i>
+                                <i title="Incomplete task list" class="fa fa-square-o dapi-100_list-icon" data-prefix="- [ ] "></i>
+                                <i title="Complete task list" class="fa fa-check-square-o dapi-100_list-icon" data-prefix="- [x] "></i>
+                                <span class="dapi-100_dividor">|</span>
+                                <i title="Link" class="fa fa-link" id="dapi-100_link-icon" data-sample-text="link" data-sample-url="https://google.com/"></i>
+                                <i title="Image" class="fa fa-image" id="dapi-100_image-icon" data-sample-text="image" data-sample-url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Picture_font_awesome.svg/240px-Picture_font_awesome.svg.png"></i>
+                                <i title="Code" class="fa fa-code" id="dapi-100_code-icon" data-modifier="```"></i>
+                            </div>
+                            <textarea name="Content" id="dapi-100_md-textarea"></textarea>
+                        </div>
+                        <div class="dapi-100_md-preview"></div>
+                    }
+                    else
+                    {
+                        <textarea name="Content"></textarea>
+                    }
                 </div>
 
                 <div class="dapi-100_row">
@@ -69,7 +104,7 @@ else
                     </div>
                 </div>
 
-                <div class="dapi-100_bottom">
+                @*<div class="dapi-100_bottom">
                     <div class="dapi-100_row dapi-100_checkbox">
                         <input type="checkbox" id="ch1">
                         <label for="ch1">Notify me of replies to my comment via e-mail</label>
@@ -78,9 +113,8 @@ else
                         <input type="checkbox" id="ch2">
                         <label for="ch2">Notify me of new articles by email.</label>
                     </div>
-                </div>
+                </div>*@
             </form>
         </div>
     </div>
-    <!--//respond-->
 }

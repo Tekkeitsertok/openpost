@@ -4,5 +4,6 @@
     {
         public string Page { get; set; }
         public string Language { get; set; }
+        public bool IsForum { get; set; }
     }
 }

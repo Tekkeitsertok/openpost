@@ -38,6 +38,7 @@ namespace openpost.ViewComponents
                     AuthorId = c.AuthorId,
                     AvatarUrl = c.Author.AvatarUrl,
                     ProfileUrl = $"{c.Author.SourcePlatform.ProviderApi ?? string.Empty}/{c.Author.PlatformId}",
+                    Title = c.Title,
                     Content = c.Content,
                 }).ToListAsync();
 

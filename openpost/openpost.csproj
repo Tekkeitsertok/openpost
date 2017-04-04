@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\forum.html" />
+    <Content Include="wwwroot\md-edit.css" />
     <Content Include="wwwroot\script.js" />
     <Content Include="wwwroot\theme.css" />
   </ItemGroup>

@@ -1,0 +1,61 @@
+﻿.dapi-100_md-content pre {
+    white-space: pre-line;
+    padding-bottom: 15px;
+}
+
+.dapi-100_md-content li {
+    margin: 0 0 0px;
+    padding-left: 40px;
+}
+
+.dapi-100_md-content ul > li:before {
+    left: 20px;
+}
+
+li.task-list-item::before {
+    content: none;
+}
+
+.dapi-100_md-edit-toolbar .fa {
+    padding: 2px;
+    border: 1px solid transparent;
+}
+
+.dapi-100_md-edit-toolbar .icon {
+    padding: 0 2px;
+    border: 1px solid transparent;
+}
+
+.dapi-100_md-edit-toolbar .fa:hover {
+    background-color: #ddd;
+    border-color: #ccc;
+    cursor: pointer;
+}
+
+.dapi-100_md-edit textarea {
+    width:100%;
+    height: 400px;
+    font-size: 15px;
+}
+
+.dapi-100_row input[type=text] {
+    width: 100%;
+    font-size: 15px;
+    margin-bottom:15px;
+}
+
+span.dapi-100_dividor { /* dividor on toolbar */
+    font-style: normal;
+    color: #ddd;
+    margin: 0 6px;
+}
+
+.dapi-100_md-preview {
+    word-wrap: break-word;
+    padding: 10px;
+}
+
+    .dapi-100_md-edit,
+    .dapi-100_md-preview {
+        width: 100% !important;
+    }
