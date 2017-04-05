@@ -46,14 +46,21 @@ namespace openpost.Controllers
             if (selectedPage != null)
             {
                 ViewBag.CommentsCount = selectedPage.CommentsCount;
+                ViewBag.AllowAnonymousComments = selectedPage.AllowAnonymousComments;
             }
-            else ViewBag.CommentsCount = 0;
-            ViewBag.IsGuest = !(await _authorizationService.AuthorizeAsync(null, model, new Requirements.AuthorizedUserRequirement()));
+            else
+            {
+                ViewBag.CommentsCount = 0;
+                ViewBag.AllowAnonymousComments = false;
+            }
+            var AuthorizedUserReq = new Requirements.AuthorizedUserRequirement();
+            await _authorizationService.AuthorizeAsync(null, model, AuthorizedUserReq);
+            ViewBag.IsGuest = AuthorizedUserReq.IsGuest;
             if (!ViewBag.IsGuest)
             {
                 //It means we passed the auth, so ID & Token are valid
                 ViewBag.AuthorId = model.Id;
-            }
+            } 
             ViewBag.SourcePlatformId = model.SourcePlatform;
             ViewBag.PublicIdentifier = model.Page;
             ViewBag.LangCode = model.Language;
@@ -62,6 +69,7 @@ namespace openpost.Controllers
             {
                 Id = model.Id,
                 Token = model.Token,
+                AuthenticatedMode = !ViewBag.IsGuest,
                 SourcePlatform = model.SourcePlatform,
                 PageIdentifier = model.Page,
             });
@@ -71,8 +79,10 @@ namespace openpost.Controllers
         [HttpPost]
         public async Task<ResponseAddCommentViewModel> Post(PostCommentViewModel model)
         {
-            if (string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.Token) || string.IsNullOrEmpty(model.SourcePlatform) ||
-                string.IsNullOrWhiteSpace(model.PageIdentifier) || string.IsNullOrWhiteSpace(model.Content))
+            if(model.AuthenticatedMode && (string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.Token)))
+                return new ResponseAddCommentViewModel(ResponseAddCommentViewModel.OperationResult.Invalid);
+            if (string.IsNullOrEmpty(model.SourcePlatform) || string.IsNullOrWhiteSpace(model.PageIdentifier) 
+                || string.IsNullOrWhiteSpace(model.Content))
                 return new ResponseAddCommentViewModel(ResponseAddCommentViewModel.OperationResult.Invalid);
 
             if (!(await _authorizationService.AuthorizeAsync(null, model, new Requirements.AuthorizedUserRequirement())))
@@ -199,7 +209,7 @@ namespace openpost.Controllers
         [HttpPost]
         public async Task<ResponseDeleteCommentViewModel> Delete(DeleteCommentViewModel model)
         {
-            if (string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.Token) || string.IsNullOrEmpty(model.SourcePlatform) ||
+            if (!model.AuthenticatedMode || string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.Token) || string.IsNullOrEmpty(model.SourcePlatform) ||
                 string.IsNullOrWhiteSpace(model.CommentId))
                 return new ResponseDeleteCommentViewModel(ResponseDeleteCommentViewModel.OperationResult.Invalid);
 

@@ -56,6 +56,7 @@ else
                 <input type="hidden" name="PageIdentifier" value="@Model.PageIdentifier" />
                 <input type="hidden" name="Id" value="@Model.Id" />
                 <input type="hidden" name="Token" value="@Model.Token" />
+                <input type="hidden" name="AuthenticatedMode" value="@Model.AuthenticatedMode.ToString()" />
                 @if (ViewBag.IsGuest)
                 {
                     <div class="dapi-100_row">

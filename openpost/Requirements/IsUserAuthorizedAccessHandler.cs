@@ -20,6 +20,12 @@ namespace openpost.Requirements
                                                       a.TokenId == resource.Token &&
                                                       a.SourcePlatformId == resource.SourcePlatform)))
             {
+                //Check if we ask an authenticated request.
+                if (resource.AuthenticatedMode)
+                {
+                    requirement.IsGuest = true;
+                    return;
+                }
                 //Failsafe, we check AuthRequest is PostCommentViewModel, if not, we cannot check if page allows Anonymous comments.
                 if (!(resource is PostCommentViewModel)) return;
 
@@ -28,6 +34,8 @@ namespace openpost.Requirements
                 if (!(await _dbContext.Pages.AnyAsync(p => p.SourcePlatformId == resource.SourcePlatform &&
                                                          p.PublicIdentifier == postCommentViewModel.PageIdentifier &&
                                                          p.AllowAnonymousComments))) return;
+
+                requirement.IsGuest = true;
             }
 
             context.Succeed(requirement);
