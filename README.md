@@ -9,6 +9,7 @@ Written in asp.net core v1.1, uses MySql or MariaDB for data management.
 - [x] Post/Edit/Delete/Answer comments
 - [x] Pages
 - [x] Forum mode (adds a custom Markdown Editor)
+- [x] Anonymous Comments (User not authenticated)
 
 ### What's need to be done
 - [ ] Email notification
