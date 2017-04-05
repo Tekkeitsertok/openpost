@@ -18,7 +18,17 @@ namespace openpost.Requirements
         {
             if (!(await _dbContext.Authors.AnyAsync(a => a.Id == resource.Id &&
                                                       a.TokenId == resource.Token &&
-                                                      a.SourcePlatformId == resource.SourcePlatform))) return;
+                                                      a.SourcePlatformId == resource.SourcePlatform)))
+            {
+                //Failsafe, we check AuthRequest is PostCommentViewModel, if not, we cannot check if page allows Anonymous comments.
+                if (!(resource is PostCommentViewModel)) return;
+
+                var postCommentViewModel = (resource as PostCommentViewModel);
+                //Then we check if page with specified public identifier allowing anonymous comments on this platform exists.
+                if (!(await _dbContext.Pages.AnyAsync(p => p.SourcePlatformId == resource.SourcePlatform &&
+                                                         p.PublicIdentifier == postCommentViewModel.PageIdentifier &&
+                                                         p.AllowAnonymousComments))) return;
+            }
 
             context.Succeed(requirement);
         }

@@ -19,7 +19,9 @@ CREATE TABLE `Authors` (
   `PlatformId` longtext COLLATE utf8mb4_bin,
   `RowVersion` longblob,
   `SourcePlatformId` varchar(22) COLLATE utf8mb4_bin DEFAULT NULL,
-  `TokenId` varchar(22) COLLATE utf8mb4_bin DEFAULT NULL
+  `TokenId` varchar(22) COLLATE utf8mb4_bin DEFAULT NULL,
+  `IsAnonymous` bit(1) NOT NULL DEFAULT b'0',
+  `WebSite` longtext COLLATE utf8mb4_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -50,7 +52,8 @@ CREATE TABLE `Pages` (
   `Id` varchar(22) COLLATE utf8mb4_bin NOT NULL,
   `CommentsCount` int(11) NOT NULL,
   `PublicIdentifier` longtext COLLATE utf8mb4_bin NOT NULL,
-  `SourcePlatformId` varchar(22) COLLATE utf8mb4_bin NOT NULL
+  `SourcePlatformId` varchar(22) COLLATE utf8mb4_bin NOT NULL,
+  `AllowAnonymousComments` bit(1) NOT NULL DEFAULT b'0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -84,7 +87,8 @@ CREATE TABLE `__EFMigrationsHistory` (
 --
 
 INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`) VALUES
-('20170401161021_Initial', '1.1.1');
+('20170401161021_Initial', '1.1.1'),
+('20170405171208_AnonymousComments', '1.1.1');
 
 --
 -- Indexes for dumped tables

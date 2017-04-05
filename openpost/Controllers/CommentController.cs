@@ -101,7 +101,11 @@ namespace openpost.Controllers
             Models.Comment comment = null;
             if (!string.IsNullOrWhiteSpace(model.Current) && model.Current.Length == 22)
             {
-                comment = await _dbContext.Comments.SingleOrDefaultAsync(c => c.Id == model.Current && c.AuthorId == model.Id);
+                //Editing comment is only available in authenticated mode.
+                if(model.AuthenticatedMode)
+                {
+                    comment = await _dbContext.Comments.SingleOrDefaultAsync(c => c.Id == model.Current && c.AuthorId == model.Id);
+                }   
                 if (comment == null) return new ResponseAddCommentViewModel(ResponseAddCommentViewModel.OperationResult.AuthorizationFailed);
                 commentResponse = new ResponseAddCommentViewModel(ResponseAddCommentViewModel.OperationResult.CommentEdited);
                 comment.Content = model.Content;
@@ -112,7 +116,6 @@ namespace openpost.Controllers
                 commentResponse = new ResponseAddCommentViewModel(ResponseAddCommentViewModel.OperationResult.CommentAdded);
                 comment = new Models.Comment()
                 {
-                    AuthorId = model.Id,
                     Title = model.Title,
                     Content = model.Content,
                     PostDate = DateTime.UtcNow,
@@ -120,14 +123,38 @@ namespace openpost.Controllers
                 };
             }
 
-            var author = await _dbContext.Authors.SingleOrDefaultAsync(a => a.Id == model.Id);
-
+            if (!model.AuthenticatedMode)
+            {
+                Models.Author AnonymousAuthor = new Models.Author()
+                {
+                    Id = ShortGuid.NewGuid().Value,
+                    SourcePlatformId = model.SourcePlatform,
+                    DisplayName = model.Pseudonym ?? "Anonymous",
+                    Email = model.Email,
+                    IsAnonymous = true,
+                    WebSite = model.Website,
+                };
+                //set comment's author to newly created Anonymous Author
+                comment.AuthorId = AnonymousAuthor.Id;
+                //Fill response data
+                commentResponse.Author = AnonymousAuthor.DisplayName;
+                commentResponse.ProfileUrl = AnonymousAuthor.WebSite;
+                //Add anonymous user to database.
+                await _dbContext.Authors.AddAsync(AnonymousAuthor);
+            } else
+            {
+                var author = await _dbContext.Authors.SingleOrDefaultAsync(a => a.Id == model.Id);
+                //Set AuthorId
+                comment.AuthorId = model.Id;
+                //Fill Response data
+                commentResponse.Author = author.DisplayName;
+                commentResponse.AvatarUrl = author.AvatarUrl;
+                //todo : profile url.
+            }
+            
             commentResponse.Title = model.Title;
             commentResponse.Content = model.Content;
-            commentResponse.Author = author.DisplayName;
-            commentResponse.AvatarUrl = author.AvatarUrl;
-            //todo : profile url.
-
+            
             if (parentComment != null)
             {
                 comment.Depth = (byte)(parentComment.Depth + 1);

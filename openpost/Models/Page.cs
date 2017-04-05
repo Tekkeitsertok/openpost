@@ -10,6 +10,8 @@ namespace openpost.Models
 
         public string PublicIdentifier { get; set; }
 
+        public bool AllowAnonymousComments { get; set; }
+
         [MaxLength(22)]
         public string SourcePlatformId { get; set; }
         public virtual Platform SourcePlatform { get; set; }

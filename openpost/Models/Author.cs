@@ -17,6 +17,9 @@ namespace openpost.Models
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string AvatarUrl { get; set; }
+        //fields below are for anonymous authors.
+        public bool IsAnonymous { get; set; }
+        public string WebSite { get; set; }
 
         [MaxLength(22)]
         public string SourcePlatformId { get; set; }

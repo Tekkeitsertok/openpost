@@ -18,7 +18,7 @@
         @await Component.InvokeAsync("CommentList", new { source = ViewBag.SourcePlatformId, page = ViewBag.PublicIdentifier })
     </ul>
 </div>
-@if (ViewBag.IsGuest)
+@if (ViewBag.IsGuest && !ViewBag.AllowAnonymousComments)
 {
     <div class="dapi-100_comment-respond" id="dapi-100_respond">
         <p>@Localizer["Guest_Can_Only_Read"]</p>
@@ -56,6 +56,14 @@ else
                 <input type="hidden" name="PageIdentifier" value="@Model.PageIdentifier" />
                 <input type="hidden" name="Id" value="@Model.Id" />
                 <input type="hidden" name="Token" value="@Model.Token" />
+                @if (ViewBag.IsGuest)
+                {
+                    <div class="dapi-100_row">
+                        <input type="text" name="Pseudonym" placeholder="@Localizer["Pseudonym"]" class="third" />
+                        <input type="email" name="Email" placeholder="@Localizer["Email"]" class="third" />
+                        <input type="text" name="Website" placeholder="@Localizer["Website"]" class="third" />
+                    </div>
+                }
                 <div class="dapi-100_row">
                     @if (ViewBag.IsForum)
                     {
@@ -105,15 +113,15 @@ else
                 </div>
 
                 @*<div class="dapi-100_bottom">
-                    <div class="dapi-100_row dapi-100_checkbox">
-                        <input type="checkbox" id="ch1">
-                        <label for="ch1">Notify me of replies to my comment via e-mail</label>
-                    </div>
-                    <div class="dapi-100_row dapi-100_checkbox">
-                        <input type="checkbox" id="ch2">
-                        <label for="ch2">Notify me of new articles by email.</label>
-                    </div>
-                </div>*@
+                        <div class="dapi-100_row dapi-100_checkbox">
+                            <input type="checkbox" id="ch1">
+                            <label for="ch1">Notify me of replies to my comment via e-mail</label>
+                        </div>
+                        <div class="dapi-100_row dapi-100_checkbox">
+                            <input type="checkbox" id="ch2">
+                            <label for="ch2">Notify me of new articles by email.</label>
+                        </div>
+                    </div>*@
             </form>
         </div>
     </div>
